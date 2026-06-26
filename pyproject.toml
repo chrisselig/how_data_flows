@@ -1,0 +1,29 @@
+[project]
+name = "how-data-flows"
+version = "0.1.0"
+description = "Interactive Streamlit course teaching HR users how data flows through an organization"
+requires-python = ">=3.11"
+dependencies = [
+    "streamlit>=1.30.0",
+    "pandas>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.4.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/data/examples.py" = ["E501"]

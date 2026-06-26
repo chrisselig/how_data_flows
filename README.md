@@ -1,6 +1,6 @@
 # How Data Flows Through Your Organization
 
-**Part of the [HR Analytics Academy](https://github.com/doopdeep/hr_analytics_academy)**
+**Part of the [HR Analytics Academy](https://github.com/chrisselig/hr_analytics_academy)**
 
 *Where does your data go after you hit Save?*
 
@@ -31,7 +31,7 @@ An interactive Streamlit course that teaches non-technical HR users how employee
 
 ```bash
 # Clone and enter
-git clone <repo-url>
+git clone https://github.com/chrisselig/how_data_flows.git
 cd how_data_flows
 
 # Create virtual environment

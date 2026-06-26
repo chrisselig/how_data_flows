@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS bu_hr.hr_academy.feedback (
     email           STRING NOT NULL,     -- SSO user (from Azure AD)
     course_id       STRING NOT NULL,     -- 'how_data_flows', 'data_governance', etc.
     lesson_id       STRING NOT NULL,     -- 'data_life', 'single_source', etc.
-    rating          INT NOT NULL,        -- 1-5 star rating
+    rating          INT,                 -- 1-5 star rating (optional)
     comment         STRING DEFAULT '',   -- free-text (optional)
     submitted_at    TIMESTAMP NOT NULL   -- UTC timestamp
 );

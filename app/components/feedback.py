@@ -38,8 +38,8 @@ def render_feedback(course_id: str, lesson_id: str) -> None:
         )
 
         if st.button("Submit Feedback", key=f"{feedback_key}_btn"):
-            if rating is None:
-                st.warning("Please select a star rating before submitting.")
+            if rating is None and not comment:
+                st.warning("Please provide a rating or comment before submitting.")
                 return
 
             # Store in session state for now
@@ -47,7 +47,7 @@ def render_feedback(course_id: str, lesson_id: str) -> None:
             st.session_state[f"{feedback_key}_data"] = {
                 "course_id": course_id,
                 "lesson_id": lesson_id,
-                "rating": rating + 1,  # st.feedback returns 0-4, store as 1-5
+                "rating": (rating + 1) if rating is not None else None,
                 "comment": comment,
             }
 

@@ -23,6 +23,8 @@ def render_sidebar(
         selected = _render_lesson_nav(lessons, progress)
         st.markdown("---")
         _render_badges(progress)
+        st.markdown("---")
+        _render_certificate_status(lessons, progress)
 
     return selected
 
@@ -74,3 +76,15 @@ def _render_badges(progress: UserProgress) -> None:
             st.markdown(f"{badge.icon} **{badge.name}**")
         else:
             st.markdown(f"🔒 ~~{badge.name}~~")
+
+
+def _render_certificate_status(lessons: list[Lesson], progress: UserProgress) -> None:
+    """Show certificate availability status."""
+    st.markdown("### Certificate")
+    completed = len(progress.completed_lesson_ids)
+    total = len(lessons)
+    if completed >= total:
+        st.markdown("Your certificate is ready! Go to the home page to download it.")
+    else:
+        remaining = total - completed
+        st.caption(f"Complete {remaining} more lesson{'s' if remaining != 1 else ''} to unlock.")

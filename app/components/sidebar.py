@@ -45,6 +45,7 @@ def _render_lesson_nav(lessons: list[Lesson], progress: UserProgress) -> str | N
 
     if st.button("Home", key="nav_home", use_container_width=True):
         st.session_state["selected_lesson"] = None
+        st.rerun()
 
     st.markdown("---")
 
@@ -55,6 +56,7 @@ def _render_lesson_nav(lessons: list[Lesson], progress: UserProgress) -> str | N
 
         if st.button(label, key=f"nav_{lesson.id}", use_container_width=True):
             st.session_state["selected_lesson"] = lesson.id
+            st.rerun()
 
     return st.session_state.get("selected_lesson")
 

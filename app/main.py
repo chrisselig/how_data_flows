@@ -15,8 +15,8 @@ if _PROJECT_ROOT not in sys.path:
 
 import streamlit as st  # noqa: E402
 
+from app._pages.registry import LESSON_PAGES  # noqa: E402
 from app.components.sidebar import render_sidebar  # noqa: E402
-from app.pages.registry import LESSON_PAGES  # noqa: E402
 from src.data.examples import get_all_lessons  # noqa: E402
 from src.gamification.progress import UserProgress  # noqa: E402
 
@@ -76,7 +76,7 @@ def _render_home(lessons: list, progress: UserProgress) -> None:
         st.metric("Badges Earned", len(progress.earned_badge_ids))
 
     st.markdown("### Lessons")
-    st.markdown("Click a lesson in the sidebar to get started, or pick one below:")
+    st.markdown("Pick a lesson to get started:")
 
     cols = st.columns(2)
     for i, lesson in enumerate(lessons):

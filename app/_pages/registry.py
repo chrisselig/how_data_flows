@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Callable
 
-from app.pages import (
+from app._pages import (
     lesson_batch_vs_realtime,
     lesson_data_life,
     lesson_error_multiplication,

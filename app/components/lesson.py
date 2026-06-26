@@ -9,6 +9,7 @@ from __future__ import annotations
 import pandas as pd
 import streamlit as st
 
+from app.components.feedback import render_feedback
 from src.gamification.badges import check_new_badges
 from src.gamification.progress import UserProgress
 from src.models.lesson_model import Lesson, QuizQuestion
@@ -51,6 +52,14 @@ def render_lesson(lesson: Lesson, progress: UserProgress, total_lessons: int) ->
 
         if not already_completed:
             _render_completion_button(lesson, progress, total_lessons)
+
+    _render_feedback(lesson)
+
+
+def _render_feedback(lesson: Lesson) -> None:
+    """Render the feedback form at the bottom of every lesson."""
+    st.markdown("---")
+    render_feedback(course_id="how_data_flows", lesson_id=lesson.id)
 
 
 def _render_concept(concept: str) -> None:

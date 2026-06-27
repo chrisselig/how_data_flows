@@ -53,12 +53,24 @@ def _init_session_state() -> None:
 
 def _render_home(lessons: list, progress: UserProgress) -> None:
     """Render the home/welcome page."""
-    st.title("How Data Flows Through Your Organization")
-
+    # -- Corporate header banner -----------------------------------------------
     st.markdown(
-        "Every time you save an employee record, it starts a journey through multiple systems. "
-        "Payroll reads it. Benefits reads it. Finance counts heads from it. "
-        "This course shows you where your data goes — and why accuracy at the source matters."
+        """
+        <div style="border-bottom: 3px solid #2980B9; padding-bottom: 1rem;
+                    margin-bottom: 1.5rem;">
+            <h1 style="color: #1B4F72; margin: 0 0 0.3rem 0;
+                       font-size: 1.8rem;">
+                How Data Flows Through Your Organization
+            </h1>
+            <p style="color: #5D6D7E; font-size: 1rem; margin: 0;">
+                Every time you save an employee record, it starts a journey
+                through multiple systems. Payroll reads it. Benefits reads it.
+                Finance counts heads from it. This course shows you where your
+                data goes — and why accuracy at the source matters.
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
     st.info(
@@ -101,33 +113,82 @@ def _render_home(lessons: list, progress: UserProgress) -> None:
                 mime="application/pdf",
             )
 
-    st.markdown("### Your Progress")
-    col1, col2, col3 = st.columns(3)
+    # -- KPI progress metrics --------------------------------------------------
+    completed_count = len(progress.completed_lesson_ids)
+    total_count = len(lessons)
+    badge_count = len(progress.earned_badge_ids)
+    st.markdown(
+        f"""
+        <div style="display: flex; gap: 1rem; margin: 1.5rem 0;">
+            <div style="flex: 1; background: #fff; border: 1px solid #DEE2E6;
+                        border-left: 4px solid #2980B9; border-radius: 4px;
+                        padding: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+                <div style="font-size: 0.7rem; text-transform: uppercase;
+                            color: #5D6D7E; margin-bottom: 0.3rem;">
+                    Lessons Completed</div>
+                <div style="font-size: 1.5rem; font-weight: 700;
+                            color: #1B4F72;">{completed_count}/{total_count}</div>
+            </div>
+            <div style="flex: 1; background: #fff; border: 1px solid #DEE2E6;
+                        border-left: 4px solid #27AE60; border-radius: 4px;
+                        padding: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+                <div style="font-size: 0.7rem; text-transform: uppercase;
+                            color: #5D6D7E; margin-bottom: 0.3rem;">
+                    Total XP</div>
+                <div style="font-size: 1.5rem; font-weight: 700;
+                            color: #1B4F72;">{progress.total_xp}</div>
+            </div>
+            <div style="flex: 1; background: #fff; border: 1px solid #DEE2E6;
+                        border-left: 4px solid #8E44AD; border-radius: 4px;
+                        padding: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+                <div style="font-size: 0.7rem; text-transform: uppercase;
+                            color: #5D6D7E; margin-bottom: 0.3rem;">
+                    Badges Earned</div>
+                <div style="font-size: 1.5rem; font-weight: 700;
+                            color: #1B4F72;">{badge_count}</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    with col1:
-        st.metric("Lessons Completed", f"{len(progress.completed_lesson_ids)}/{len(lessons)}")
-    with col2:
-        st.metric("Total XP", progress.total_xp)
-    with col3:
-        st.metric("Badges Earned", len(progress.earned_badge_ids))
-
-    st.markdown("### Lessons")
-    st.markdown("Pick a lesson to get started:")
+    # -- Lesson cards ----------------------------------------------------------
+    st.markdown(
+        """<h3 style="color: #1B4F72; margin-bottom: 0.5rem;">Lessons</h3>""",
+        unsafe_allow_html=True,
+    )
 
     cols = st.columns(2)
     for i, lesson in enumerate(lessons):
         completed = lesson.id in progress.completed_lesson_ids
-        status = " ✓" if completed else ""
+        chip_bg = "#27AE60" if completed else "#95A5A6"
+        chip_text = "Complete" if completed else "Not Started"
+        preview = (
+            lesson.concept[:120] + "..." if len(lesson.concept) > 120 else lesson.concept
+        )
         with cols[i % 2]:
-            with st.container(border=True):
-                st.markdown(f"#### {lesson.icon} {lesson.title}{status}")
-                preview = (
-                    lesson.concept[:120] + "..." if len(lesson.concept) > 120 else lesson.concept
-                )
-                st.caption(preview)
-                if st.button("Start", key=f"home_{lesson.id}"):
-                    st.session_state["selected_lesson"] = lesson.id
-                    st.rerun()
+            st.markdown(
+                f"""
+                <div style="border: 1px solid #DEE2E6; border-left: 4px solid #2980B9;
+                            border-radius: 4px; padding: 1rem; margin-bottom: 0.75rem;
+                            box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+                    <div style="display: flex; justify-content: space-between;
+                                align-items: center; margin-bottom: 0.5rem;">
+                        <strong style="color: #1B4F72;">
+                            {lesson.icon} {lesson.title}</strong>
+                        <span style="background: {chip_bg}; color: #fff;
+                                     font-size: 0.7rem; padding: 2px 8px;
+                                     border-radius: 12px;">{chip_text}</span>
+                    </div>
+                    <p style="color: #5D6D7E; font-size: 0.85rem; margin: 0;">
+                        {preview}</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            if st.button("Start", key=f"home_{lesson.id}"):
+                st.session_state["selected_lesson"] = lesson.id
+                st.rerun()
 
 
 if __name__ == "__main__":

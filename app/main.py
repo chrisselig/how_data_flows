@@ -22,6 +22,23 @@ from src.data.examples import get_all_lessons  # noqa: E402
 from src.gamification.progress import UserProgress  # noqa: E402
 
 
+def _load_theme() -> None:
+    """Load corporate CSS and render the logo bar."""
+    import base64
+
+    css = (Path(__file__).parent / "static" / "theme.css").read_text()
+    st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
+    logo_path = Path(__file__).parent / "static" / "logo.png"
+    if logo_path.exists():
+        b64 = base64.b64encode(logo_path.read_bytes()).decode()
+        st.markdown(
+            f'<div class="corp-topbar">'
+            f'<img src="data:image/png;base64,{b64}" alt="Logo" /></div>',
+            unsafe_allow_html=True,
+        )
+    st.markdown('<div class="corp-divider"></div>', unsafe_allow_html=True)
+
+
 def main() -> None:
     """Application entry point."""
     st.set_page_config(
@@ -30,6 +47,7 @@ def main() -> None:
         layout="wide",
     )
 
+    _load_theme()
     _init_session_state()
 
     lessons = get_all_lessons()
@@ -53,21 +71,14 @@ def _init_session_state() -> None:
 
 def _render_home(lessons: list, progress: UserProgress) -> None:
     """Render the home/welcome page."""
-    # -- Corporate header banner -----------------------------------------------
     st.markdown(
         """
-        <div style="border-bottom: 3px solid #2980B9; padding-bottom: 1rem;
-                    margin-bottom: 1.5rem;">
-            <h1 style="color: #1B4F72; margin: 0 0 0.3rem 0;
-                       font-size: 1.8rem;">
-                How Data Flows Through Your Organization
-            </h1>
-            <p style="color: #5D6D7E; font-size: 1rem; margin: 0;">
-                Every time you save an employee record, it starts a journey
-                through multiple systems. Payroll reads it. Benefits reads it.
-                Finance counts heads from it. This course shows you where your
-                data goes — and why accuracy at the source matters.
-            </p>
+        <div class="corp-header">
+            <h1>How Data Flows Through Your Organization</h1>
+            <p>Every time you save an employee record, it starts a journey
+            through multiple systems. Payroll reads it. Benefits reads it.
+            Finance counts heads from it. This course shows you where your
+            data goes — and why accuracy at the source matters.</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -119,33 +130,18 @@ def _render_home(lessons: list, progress: UserProgress) -> None:
     badge_count = len(progress.earned_badge_ids)
     st.markdown(
         f"""
-        <div style="display: flex; gap: 1rem; margin: 1.5rem 0;">
-            <div style="flex: 1; background: #fff; border: 1px solid #DEE2E6;
-                        border-left: 4px solid #2980B9; border-radius: 4px;
-                        padding: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
-                <div style="font-size: 0.7rem; text-transform: uppercase;
-                            color: #5D6D7E; margin-bottom: 0.3rem;">
-                    Lessons Completed</div>
-                <div style="font-size: 1.5rem; font-weight: 700;
-                            color: #1B4F72;">{completed_count}/{total_count}</div>
+        <div class="kpi-row">
+            <div class="kpi-card kpi-card--blue">
+                <div class="kpi-label">Lessons Completed</div>
+                <div class="kpi-value">{completed_count}/{total_count}</div>
             </div>
-            <div style="flex: 1; background: #fff; border: 1px solid #DEE2E6;
-                        border-left: 4px solid #27AE60; border-radius: 4px;
-                        padding: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
-                <div style="font-size: 0.7rem; text-transform: uppercase;
-                            color: #5D6D7E; margin-bottom: 0.3rem;">
-                    Total XP</div>
-                <div style="font-size: 1.5rem; font-weight: 700;
-                            color: #1B4F72;">{progress.total_xp}</div>
+            <div class="kpi-card kpi-card--green">
+                <div class="kpi-label">Total XP</div>
+                <div class="kpi-value">{progress.total_xp}</div>
             </div>
-            <div style="flex: 1; background: #fff; border: 1px solid #DEE2E6;
-                        border-left: 4px solid #8E44AD; border-radius: 4px;
-                        padding: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
-                <div style="font-size: 0.7rem; text-transform: uppercase;
-                            color: #5D6D7E; margin-bottom: 0.3rem;">
-                    Badges Earned</div>
-                <div style="font-size: 1.5rem; font-weight: 700;
-                            color: #1B4F72;">{badge_count}</div>
+            <div class="kpi-card kpi-card--purple">
+                <div class="kpi-label">Badges Earned</div>
+                <div class="kpi-value">{badge_count}</div>
             </div>
         </div>
         """,
@@ -154,14 +150,14 @@ def _render_home(lessons: list, progress: UserProgress) -> None:
 
     # -- Lesson cards ----------------------------------------------------------
     st.markdown(
-        """<h3 style="color: #1B4F72; margin-bottom: 0.5rem;">Lessons</h3>""",
+        '<h3 class="section-heading">Lessons</h3>',
         unsafe_allow_html=True,
     )
 
     cols = st.columns(2)
     for i, lesson in enumerate(lessons):
         completed = lesson.id in progress.completed_lesson_ids
-        chip_bg = "#27AE60" if completed else "#95A5A6"
+        chip_cls = "chip--complete" if completed else "chip--not-started"
         chip_text = "Complete" if completed else "Not Started"
         preview = (
             lesson.concept[:120] + "..." if len(lesson.concept) > 120 else lesson.concept
@@ -169,19 +165,13 @@ def _render_home(lessons: list, progress: UserProgress) -> None:
         with cols[i % 2]:
             st.markdown(
                 f"""
-                <div style="border: 1px solid #DEE2E6; border-left: 4px solid #2980B9;
-                            border-radius: 4px; padding: 1rem; margin-bottom: 0.75rem;
-                            box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
-                    <div style="display: flex; justify-content: space-between;
-                                align-items: center; margin-bottom: 0.5rem;">
-                        <strong style="color: #1B4F72;">
-                            {lesson.icon} {lesson.title}</strong>
-                        <span style="background: {chip_bg}; color: #fff;
-                                     font-size: 0.7rem; padding: 2px 8px;
-                                     border-radius: 12px;">{chip_text}</span>
+                <div class="lesson-card">
+                    <div class="lesson-card__header">
+                        <span class="lesson-card__title">
+                            {lesson.icon} {lesson.title}</span>
+                        <span class="chip {chip_cls}">{chip_text}</span>
                     </div>
-                    <p style="color: #5D6D7E; font-size: 0.85rem; margin: 0;">
-                        {preview}</p>
+                    <p class="lesson-card__preview">{preview}</p>
                 </div>
                 """,
                 unsafe_allow_html=True,

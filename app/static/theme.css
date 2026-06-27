@@ -1,0 +1,114 @@
+/* HR Analytics Academy — Corporate Dashboard Theme
+   Shared across all course apps. Single source of truth for branding.
+   Reference: hr_analytics_academy/.github/instructions/branding.instructions.md
+*/
+
+/* ---- Logo bar ----------------------------------------------------------- */
+.corp-topbar {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5rem 0;
+}
+
+.corp-topbar img {
+    height: 48px;
+}
+
+.corp-divider {
+    height: 3px;
+    background: #2980B9;
+    border: none;
+    margin: 0 0 1.5rem 0;
+}
+
+/* ---- Header ------------------------------------------------------------- */
+.corp-header h1 {
+    color: #1B4F72;
+    margin: 0 0 0.3rem 0;
+    font-size: 1.8rem;
+}
+
+.corp-header p {
+    color: #5D6D7E;
+    font-size: 1rem;
+    margin: 0 0 1.5rem 0;
+}
+
+/* ---- KPI cards ---------------------------------------------------------- */
+.kpi-row {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.kpi-card {
+    flex: 1;
+    background: #fff;
+    border: 1px solid #DEE2E6;
+    border-radius: 4px;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.kpi-card--blue   { border-left: 4px solid #2980B9; }
+.kpi-card--green  { border-left: 4px solid #27AE60; }
+.kpi-card--purple { border-left: 4px solid #8E44AD; }
+
+.kpi-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #5D6D7E;
+    margin-bottom: 0.3rem;
+}
+
+.kpi-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1B4F72;
+}
+
+/* ---- Lesson cards ------------------------------------------------------- */
+.lesson-card {
+    border: 1px solid #DEE2E6;
+    border-left: 4px solid #2980B9;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.lesson-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.lesson-card__title {
+    color: #1B4F72;
+    font-weight: 700;
+}
+
+.lesson-card__preview {
+    color: #5D6D7E;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+/* ---- Status chips ------------------------------------------------------- */
+.chip {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    color: #fff;
+    display: inline-block;
+}
+
+.chip--complete    { background: #27AE60; }
+.chip--not-started { background: #95A5A6; }
+
+/* ---- Section headings --------------------------------------------------- */
+.section-heading {
+    color: #1B4F72;
+    margin-bottom: 0.5rem;
+}

@@ -1,35 +1,95 @@
-/* HR Analytics Academy — Corporate Dashboard Theme
-   Shared across all course apps. Single source of truth for branding.
-   Reference: hr_analytics_academy/.github/instructions/branding.instructions.md
+/* Corporate Dashboard Theme — shared across all HR course apps.
+   Single source of truth for branding.
+
+   PORTABLE: copy this file together with app/theme.py and the placeholder
+   assets in this folder into any course app. Re-brand a whole corporation by
+   editing the CSS variables in :root below — nothing else needs to change.
+
+   Placeholders to swap in your corporate environment:
+     - static/logo.(png|svg)        company logo, shown top-right
+     - static/background.(png|jpg|svg)  full-app background image
+   Both are optional; sensible fallbacks are used when absent.
 */
 
-/* ---- Logo bar ----------------------------------------------------------- */
-.corp-topbar {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0.5rem 0;
+:root {
+    /* ---- Brand palette (edit these to re-skin every course) -------------
+       TODO(branding): every value below is a PLACEHOLDER. Replace with the
+       official hex codes from the corporate branding Copilot skill (office
+       machine). Also update `primaryColor` in .streamlit/config.toml to match
+       --brand-orange. */
+    --brand-orange:  #E8730C;   /* TODO(branding): app/report name + header bar (primary accent) */
+    --brand-primary: #1B4F72;   /* TODO(branding): headings / KPI values */
+    --brand-accent:  #2980B9;   /* TODO(branding): secondary accents */
+    --brand-green:   #27AE60;   /* TODO(branding): success / complete state */
+    --brand-purple:  #8E44AD;   /* TODO(branding): tertiary accent (KPI card) */
+    --brand-muted:   #5D6D7E;   /* TODO(branding): secondary text */
+    --brand-border:  #DEE2E6;   /* TODO(branding): card / divider borders */
+    --panel-bg:      #FFFFFF;   /* TODO(branding): card / panel background */
+
+    /* ---- Full-app background -------------------------------------------- */
+    /* app/theme.py injects `--app-bg-image: url(...)` from static/background.*
+       when a file is present. This neutral gradient is the fallback so the
+       app still looks intentional with no image. */
+    --app-bg-image: linear-gradient(180deg, #F5F7FA 0%, #E9EEF3 100%);
+    /* White veil layered over the image so page text stays readable. Lower
+       the alphas for a bolder image, raise them for a subtler watermark. */
+    --app-bg-overlay: linear-gradient(
+        rgba(255, 255, 255, 0.86),
+        rgba(255, 255, 255, 0.92)
+    );
 }
 
-.corp-topbar img {
-    height: 48px;
+/* ---- Full-app background ------------------------------------------------ */
+.stApp {
+    background-image: var(--app-bg-overlay), var(--app-bg-image);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* ---- Branded header bar -------------------------------------------------- */
+/* Layout: app/report name (orange) on the left, company logo on the right,
+   horizontal brand bar underneath. */
+.corp-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.25rem 0 0.6rem 0;
+    flex-wrap: wrap;
+}
+
+.corp-app-name {
+    color: var(--brand-orange);
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+}
+
+.corp-logo {
+    height: 44px;
+    width: auto;
+    display: block;
 }
 
 .corp-divider {
     height: 3px;
-    background: #2980B9;
+    background: var(--brand-orange);
     border: none;
     margin: 0 0 1.5rem 0;
 }
 
-/* ---- Header ------------------------------------------------------------- */
+/* ---- Home page intro header --------------------------------------------- */
 .corp-header h1 {
-    color: #1B4F72;
+    color: var(--brand-primary);
     margin: 0 0 0.3rem 0;
     font-size: 1.8rem;
 }
 
 .corp-header p {
-    color: #5D6D7E;
+    color: var(--brand-muted);
     font-size: 1rem;
     margin: 0 0 1.5rem 0;
 }
@@ -43,34 +103,35 @@
 
 .kpi-card {
     flex: 1;
-    background: #fff;
-    border: 1px solid #DEE2E6;
+    background: var(--panel-bg);
+    border: 1px solid var(--brand-border);
     border-radius: 4px;
     padding: 1rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.kpi-card--blue   { border-left: 4px solid #2980B9; }
-.kpi-card--green  { border-left: 4px solid #27AE60; }
-.kpi-card--purple { border-left: 4px solid #8E44AD; }
+.kpi-card--blue   { border-left: 4px solid var(--brand-accent); }
+.kpi-card--green  { border-left: 4px solid var(--brand-green); }
+.kpi-card--purple { border-left: 4px solid var(--brand-purple); }
 
 .kpi-label {
     font-size: 0.7rem;
     text-transform: uppercase;
-    color: #5D6D7E;
+    color: var(--brand-muted);
     margin-bottom: 0.3rem;
 }
 
 .kpi-value {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #1B4F72;
+    color: var(--brand-primary);
 }
 
 /* ---- Lesson cards ------------------------------------------------------- */
 .lesson-card {
-    border: 1px solid #DEE2E6;
-    border-left: 4px solid #2980B9;
+    background: var(--panel-bg);
+    border: 1px solid var(--brand-border);
+    border-left: 4px solid var(--brand-accent);
     border-radius: 4px;
     padding: 1rem;
     margin-bottom: 0.75rem;
@@ -85,12 +146,12 @@
 }
 
 .lesson-card__title {
-    color: #1B4F72;
+    color: var(--brand-primary);
     font-weight: 700;
 }
 
 .lesson-card__preview {
-    color: #5D6D7E;
+    color: var(--brand-muted);
     font-size: 0.85rem;
     margin: 0;
 }
@@ -104,11 +165,11 @@
     display: inline-block;
 }
 
-.chip--complete    { background: #27AE60; }
+.chip--complete    { background: var(--brand-green); }
 .chip--not-started { background: #95A5A6; }
 
 /* ---- Section headings --------------------------------------------------- */
 .section-heading {
-    color: #1B4F72;
+    color: var(--brand-primary);
     margin-bottom: 0.5rem;
 }

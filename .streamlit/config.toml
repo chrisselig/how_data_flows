@@ -1,0 +1,9 @@
+# Streamlit theme — force LIGHT so the app never follows the OS dark mode.
+# Corporate branding (background image, header, colours) is applied on top of
+# this by app/theme.py + app/static/theme.css.
+[theme]
+base = "light"
+primaryColor = "#E8730C"        # brand orange — buttons, active controls
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F5F7FA"
+textColor = "#1B2733"

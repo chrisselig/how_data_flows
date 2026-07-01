@@ -1,0 +1,20 @@
+<!-- PLACEHOLDER full-app background. Replace with your real corporate image
+     (background.png / background.jpg / background.svg). A white veil is layered
+     over it by theme.css (--app-bg-overlay) so page text stays readable. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Background image placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EEF3F8"/>
+      <stop offset="1" stop-color="#DCE5EE"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <g fill="none" stroke="#C7D3DF" stroke-width="2" opacity="0.55">
+    <circle cx="240" cy="200" r="150"/>
+    <circle cx="1360" cy="720" r="210"/>
+    <path d="M0 640 Q400 540 800 640 T1600 640"/>
+    <path d="M0 700 Q400 600 800 700 T1600 700"/>
+  </g>
+  <text x="800" y="450" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="700" fill="#B2C0CE" letter-spacing="3">BACKGROUND IMAGE PLACEHOLDER</text>
+  <text x="800" y="500" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#C2CDDA" letter-spacing="2">swap static/background.* with your corporate artwork</text>
+</svg>

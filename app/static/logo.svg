@@ -1,0 +1,9 @@
+<!-- PLACEHOLDER company logo. Replace with your real logo (logo.png or logo.svg).
+     Shown top-right in the header at 44px height. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="184" height="48" viewBox="0 0 184 48" role="img" aria-label="Company logo placeholder">
+  <rect x="1" y="1" width="182" height="46" rx="6" fill="#FFFFFF" stroke="#B8C4D0" stroke-dasharray="5 3"/>
+  <circle cx="27" cy="24" r="13" fill="#E8730C"/>
+  <path d="M21 24 l4 4 l8 -9" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="50" y="21" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#1B4F72">YOUR LOGO</text>
+  <text x="50" y="36" font-family="Arial, Helvetica, sans-serif" font-size="9" fill="#8A97A5" letter-spacing="1">PLACEHOLDER</text>
+</svg>

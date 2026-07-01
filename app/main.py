@@ -17,37 +17,23 @@ import streamlit as st  # noqa: E402
 
 from app._pages.registry import LESSON_PAGES  # noqa: E402
 from app.components.sidebar import render_sidebar  # noqa: E402
+from app.theme import apply_theme  # noqa: E402
 from src.certificate import CertificateData, generate_certificate_pdf  # noqa: E402
 from src.data.examples import get_all_lessons  # noqa: E402
 from src.gamification.progress import UserProgress  # noqa: E402
 
-
-def _load_theme() -> None:
-    """Load corporate CSS and render the logo bar."""
-    import base64
-
-    css = (Path(__file__).parent / "static" / "theme.css").read_text()
-    st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
-    logo_path = Path(__file__).parent / "static" / "logo.png"
-    if logo_path.exists():
-        b64 = base64.b64encode(logo_path.read_bytes()).decode()
-        st.markdown(
-            f'<div class="corp-topbar">'
-            f'<img src="data:image/png;base64,{b64}" alt="Logo" /></div>',
-            unsafe_allow_html=True,
-        )
-    st.markdown('<div class="corp-divider"></div>', unsafe_allow_html=True)
+COURSE_TITLE = "How Data Flows"
 
 
 def main() -> None:
     """Application entry point."""
     st.set_page_config(
-        page_title="How Data Flows",
+        page_title=COURSE_TITLE,
         page_icon="🔄",
         layout="wide",
     )
 
-    _load_theme()
+    apply_theme(default_name=COURSE_TITLE)
     _init_session_state()
 
     lessons = get_all_lessons()
@@ -124,30 +110,6 @@ def _render_home(lessons: list, progress: UserProgress) -> None:
                 mime="application/pdf",
             )
 
-    # -- KPI progress metrics --------------------------------------------------
-    completed_count = len(progress.completed_lesson_ids)
-    total_count = len(lessons)
-    badge_count = len(progress.earned_badge_ids)
-    st.markdown(
-        f"""
-        <div class="kpi-row">
-            <div class="kpi-card kpi-card--blue">
-                <div class="kpi-label">Lessons Completed</div>
-                <div class="kpi-value">{completed_count}/{total_count}</div>
-            </div>
-            <div class="kpi-card kpi-card--green">
-                <div class="kpi-label">Total XP</div>
-                <div class="kpi-value">{progress.total_xp}</div>
-            </div>
-            <div class="kpi-card kpi-card--purple">
-                <div class="kpi-label">Badges Earned</div>
-                <div class="kpi-value">{badge_count}</div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
     # -- Lesson cards ----------------------------------------------------------
     st.markdown(
         '<h3 class="section-heading">Lessons</h3>',
@@ -159,9 +121,7 @@ def _render_home(lessons: list, progress: UserProgress) -> None:
         completed = lesson.id in progress.completed_lesson_ids
         chip_cls = "chip--complete" if completed else "chip--not-started"
         chip_text = "Complete" if completed else "Not Started"
-        preview = (
-            lesson.concept[:120] + "..." if len(lesson.concept) > 120 else lesson.concept
-        )
+        preview = lesson.concept[:120] + "..." if len(lesson.concept) > 120 else lesson.concept
         with cols[i % 2]:
             st.markdown(
                 f"""
